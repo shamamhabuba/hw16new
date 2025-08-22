@@ -1,16 +1,24 @@
+//require('dotenv').config();
 import { test, expect } from '@playwright/test';
+import { faker } from '@faker-js/faker';
 
-test('Sign-in button is enabled', async ({ page }) => {
-  await page.getByTestId('https://fe-delivery.tallinn-learning.ee/');
-  await page.getByTestId('username-input').fill('username123');
-  await page.getByTestId('password-input').fill('password123');
-  await expect(page.getByTestId('signIn-button')).toBeEnabled();
+const randomUsername= faker.internet.username();
+const randomPassword= faker.internet.password();
+
+
+const appUrl = process.env.APP_URL;
+
+test('Sign-in button is enable', async ({ page }) => {
+  await page.goto('https://fe-delivery.tallinn-learning.ee/');
+  await page.getByTestId('username-input').fill(randomUsername);
+  await page.getByTestId(`password-input`).fill(randomPassword);
+  await expect(page.getByTestId(`signIn-button`)).toBeEnabled();
 });
 
-test('Authorization error pop-up is displayed', async ({ page }) => {
-  await page.getByTestId('https://fe-delivery.tallinn-learning.ee/');
-  await page.getByTestId('username-input').fill('username123');
-  await page.getByTestId('password-input').fill('password123');
-  await page.getByTestId('signIn-button').click();
-  await expect(page.getByTestId('authorizationError-popup')).toBeVisible();
+test('Authorization error pop-up is displayed ', async ({ page }) => {
+  await page.goto('https://fe-delivery.tallinn-learning.ee/');
+  await page.getByTestId('username-input').fill(randomUsername);
+  await page.getByTestId(`password-input`).fill(randomPassword);
+  await page.getByTestId(`signIn-button`).click();
+  await expect(page.getByTestId(`authorizationError-popup`)).toBeVisible();
 });
